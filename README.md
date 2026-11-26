@@ -22,3 +22,5 @@ Any static host works (GitHub Pages, Cloudflare Pages, Netlify). Publish the rep
 `games/` holds browser party games (no server). `games/imposter.html` is Guess the Imposter: the host sets players, imposters and topic, and each player scans a QR code that carries their own card in the link. Topics live in `games/imposter.js` (the `T` object). `games/wavelength.html` is Wavelength: the clue-giver scans a QR code to see a secret number from 1 to 10 on a scale, and the group guesses it. Scales are grouped into packs in `games/wavelength.js` (the `PACKS` object). All game pages share the site theme through `games/theme.js` (same `kj-theme` setting as the terminal's `theme` command). Open the terminal and type `games`.
 
 `games/guess.html` is Guess the Thing: players secretly type words on one shared device (pass the phone), then the group asks yes/no questions to guess each word. Categories are in `games/guess.js` (`CATS`).
+
+Terminal completion lives in `js/terminal.js` (`wire`, `cands`, `ARGP`). Add a command to `CMD` and it completes automatically. Commands that take arguments (`cd`, `theme`, `fly`) get their argument lists from `ARGP`.

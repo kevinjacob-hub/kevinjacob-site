@@ -148,3 +148,8 @@ body.wmax .dock{display:none}
 .bkp.big img{object-fit:contain}
 .bkb{padding:10px 12px 12px}.bkb h3{margin:0;font-size:15px}.bkb .d{font-size:12px}.bkb p{margin:6px 0 0}
 @media(max-width:720px){.bks{grid-template-columns:1fr 1fr}.bkb{padding:8px 10px 10px}}
+/* terminal completion */
+.ig{position:relative;flex:1;min-width:0;display:flex}.ig input{width:100%;position:relative;z-index:1;padding:0;margin:0}
+.gh{position:absolute;inset:0;display:flex;align-items:center;pointer-events:none;white-space:pre;overflow:hidden;color:var(--dim);opacity:.6;z-index:0}
+.sug{display:flex;gap:6px;overflow-x:auto;margin-top:6px;padding-bottom:2px;font-size:12px;scrollbar-width:none}.sug::-webkit-scrollbar{display:none}
+.sug button{flex:none;padding:1px 9px;border-radius:999px}.sug button.on{border-color:var(--acc);color:var(--acc);box-shadow:inset 0 0 0 1px var(--acc)}.sug .d{flex:none;align-self:center}
