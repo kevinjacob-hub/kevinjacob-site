@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guess the Imposter | Kevin Jacob</title>
+<meta name="description" content="A pass-the-phone party game. Pick the players, imposters and topic, then everyone scans a QR code to get their secret card.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="games.css">
+<script>try{var s=localStorage.getItem('kj-theme');if(s)document.documentElement.dataset.theme=s}catch(e){}</script></head><body>
+<div class="wrap">
+ <div class="bar"><a href="../">&larr; kevinjacob</a><a href="./">games</a><span class="sp">imposter</span></div>
+
+ <main id="host" hidden>
+  <section id="setup">
+   <h1>guess the imposter<span class="a">_</span></h1>
+   <p class="d">Everyone gets the same secret word, except the imposters. Give one clue each, then vote out the imposter.</p>
+
+   <h2>players</h2>
+   <div class="row"><span>how many people</span><span class="step"><button id="nm" aria-label="Fewer players">&minus;</button><b id="nv">5</b><button id="np" aria-label="More players">+</button></span></div>
+   <h2>imposters</h2>
+   <div class="row"><span>how many <small class="d" id="khint"></small></span><span class="step"><button id="km" aria-label="Fewer imposters">&minus;</button><b id="kv">1</b><button id="kp" aria-label="More imposters">+</button></span></div>
+   <div class="seg" id="mode">
+    <button data-m="diff" aria-pressed="true">a different word<small>imposters get a similar topic word, and don&rsquo;t know it</small></button>
+    <button data-m="blank" aria-pressed="false">no word<small>imposters know they&rsquo;re the imposter</small></button>
+   </div>
+
+   <h2>topic</h2>
+   <div class="topics" id="topics"></div>
+   <div id="customwrap" hidden><textarea id="custom" rows="3" placeholder="pizza, sushi, tacos, ramen"></textarea><div class="warn">separate words with commas</div></div>
+
+   <p class="a" id="err" hidden></p>
+   <p></p>
+   <button class="btn big" id="go">generate QR codes &#9654;</button>
+  </section>
+
+  <section id="pass" hidden>
+   <h1 class="ctr" id="pnum">Player 1</h1>
+   <div class="dots" id="dots"></div>
+   <div id="qrwrap">
+    <p class="ctr d">Player, point your phone camera at this code. Only you should see your card.</p>
+    <div class="qrbox" id="qr"></div>
+    <p class="ctr"><button id="here">no phone? show it on this screen</button> <button id="copy">copy link</button></p>
+   </div>
+   <div id="herewrap" hidden>
+    <p class="ctr d">Hand this device to the player. Hold the card to read it, then pass it back.</p>
+    <div id="herecard"></div>
+    <p class="ctr"><button id="backqr">&larr; back to the QR code</button></p>
+   </div>
+   <p class="ctr"><button id="prev">&#9664; back</button> <button class="btn" id="next" style="border-color:var(--acc);color:var(--acc)">Next player &#9654;</button></p>
+  </section>
+
+  <section id="done" hidden>
+   <h1>cards dealt<span class="a">_</span></h1>
+   <p><b class="u" id="first"></b> gives the first clue, then it goes around the circle.</p>
+   <ul class="list"><li>say one clue about your word. Don&rsquo;t say the word itself.</li><li>imposters: listen, and blend in.</li><li>after a round or two, everyone votes for who they think the imposter is.</li></ul>
+   <p><button class="btn big" id="revbtn">reveal the imposters</button></p>
+   <div id="reveal" hidden></div>
+   <p class="ctr"><button id="again">new round (same settings)</button> <button id="change">change settings</button></p>
+  </section>
+ </main>
+
+ <main id="me" hidden>
+  <h1 id="who">Player</h1>
+  <p class="d">Hold the card to see your secret. Let go to hide it, and don&rsquo;t show anyone.</p>
+  <div id="mecard"></div>
+  <p class="warn">This card lives only on your phone. Close this tab when the round is over.</p>
+  <p class="warn"><a href="#" id="hostlink">host a game instead</a></p>
+ </main>
+</div>
+<script src="qr.js"></script><script src="imposter.js"></script>
+</body></html>

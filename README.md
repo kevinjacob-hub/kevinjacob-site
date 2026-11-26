@@ -16,3 +16,7 @@ Sign-ups are emailed through FormSubmit (`KK.endpoint` in `js/content.js`). Afte
 
 ## Deploy
 Any static host works (GitHub Pages, Cloudflare Pages, Netlify). Publish the repo root with no build command.
+
+## Party games
+
+`games/` holds browser party games (no server). `games/imposter.html` is Guess the Imposter: the host sets players, imposters and topic, and each player scans a QR code that carries their own card in the link. Topics live in `games/imposter.js` (the `T` object). Open the terminal and type `games`.
