@@ -76,7 +76,7 @@ const PACKS={
   ["Bug drivers","Name a bug","crashes the car immediately","trusted to drive"]]
 };
 const ALL=Object.values(PACKS).flat();
-const CUSTOM='Your own scale',RPACK='Random from this pack',RALL='Random from everything';
+const CUSTOM='Your own scale',RPACK='Random from selected packs';
 const KEY='kj-wavelength-settings',ME='kj-wavelength-me',XK='kev-wavelength';
 const PTS=[3,2,1];
 
@@ -126,19 +126,23 @@ function player(p){
 }
 
 /* ---------- host view ---------- */
-const S=Object.assign({n:4,rounds:5,pack:'Classic',topic:'Random from this pack',lo:'',hi:'',pr:''},(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(_){return{}}})());
+const S=Object.assign({n:4,rounds:5,packs:['Classic'],topic:'Random from selected packs',lo:'',hi:'',pr:''},(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(_){return{}}})());
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(_){}};
 let G=null;
 
 function renderSetup(){
  S.n=Math.min(12,Math.max(2,S.n|0));S.rounds=Math.min(15,Math.max(1,S.rounds|0));
- if(!PACKS[S.pack])S.pack='Classic';
- const inPack=PACKS[S.pack].some(x=>x[0]===S.topic);
- if(!inPack&&![RPACK,RALL,CUSTOM].includes(S.topic))S.topic=RPACK;
+ if(!Array.isArray(S.packs))S.packs=S.pack?[S.pack]:[];
+ S.packs=S.packs.filter(k=>PACKS[k]);if(!S.packs.length)S.packs=['Classic'];
+ const one=S.packs.length===1?PACKS[S.packs[0]]:null;
+ if(S.topic!==CUSTOM&&!(one&&one.some(x=>x[0]===S.topic)))S.topic=RPACK;
  $('#nv').textContent=S.n;$('#rv').textContent=S.rounds;
- $('#packs').innerHTML=Object.keys(PACKS).map(k=>'<button class="tp" data-p="'+esc(k)+'" aria-pressed="'+(k===S.pack)+'">'+esc(k)+'<small>'+PACKS[k].length+' scales</small></button>').join('');
- $('#topics').innerHTML=PACKS[S.pack].map(x=>x[0]).concat([RPACK,RALL,CUSTOM]).map(t=>{const x=PACKS[S.pack].find(y=>y[0]===t);
-  return '<button class="tp" data-t="'+esc(t)+'" aria-pressed="'+(t===S.topic)+'">'+esc(t)+'<small>'+(x?esc(x[2])+' \u2192 '+esc(x[3]):t===RPACK?'a new scale each round':t===RALL?'any pack':'make your own')+'</small></button>'}).join('');
+ $('#packs').innerHTML=Object.keys(PACKS).map(k=>'<button class="tp" data-p="'+esc(k)+'" aria-pressed="'+S.packs.includes(k)+'">'+esc(k)+'<small>'+PACKS[k].length+' scales</small></button>').join('');
+ $('#allp').textContent=S.packs.length===Object.keys(PACKS).length?'clear (keep Classic)':'select all packs';
+ const pool=S.packs.reduce((n,k)=>n+PACKS[k].length,0);
+ $('#phint').textContent=S.packs.length+' pack'+(S.packs.length>1?'s':'')+' selected, '+pool+' scales. Tap packs to add or remove them.'+(one?'':' Select just one pack to pick a specific scale.');
+ $('#topics').innerHTML=(one?one.map(x=>x[0]):[]).concat([RPACK,CUSTOM]).map(t=>{const x=one&&one.find(y=>y[0]===t);
+  return '<button class="tp" data-t="'+esc(t)+'" aria-pressed="'+(t===S.topic)+'">'+esc(t)+'<small>'+(x?esc(x[2])+' \u2192 '+esc(x[3]):t===RPACK?'a new scale each round':'make your own')+'</small></button>'}).join('');
  $('#customwrap').hidden=S.topic!==CUSTOM;
  $('#clo').value=S.lo;$('#chi').value=S.hi;$('#cpr').value=S.pr;
  save();
@@ -148,8 +152,9 @@ const used=new Set();
 function specFor(){
  if(S.topic===CUSTOM)return{name:'Custom',prompt:S.pr.trim()||'Give a clue',lo:S.lo.trim(),hi:S.hi.trim()};
  let s;
- if(S.topic===RPACK||S.topic===RALL){const pool=S.topic===RALL?ALL:PACKS[S.pack],fresh=pool.filter(x=>!used.has(x[0]));s=pick(fresh.length?fresh:pool);used.add(s[0])}
- else s=PACKS[S.pack].find(x=>x[0]===S.topic)||PACKS[S.pack][0];
+ const all=S.packs.flatMap(k=>PACKS[k]);
+ if(S.topic===RPACK){const fresh=all.filter(x=>!used.has(x[0]));s=pick(fresh.length?fresh:all);used.add(s[0])}
+ else s=all.find(x=>x[0]===S.topic)||all[0];
  return{name:s[0],prompt:s[1],lo:s[2],hi:s[3]};
 }
 
@@ -218,7 +223,8 @@ function host(){
  renderSetup();
  $('#nm').onclick=()=>{S.n--;renderSetup()};$('#np').onclick=()=>{S.n++;renderSetup()};
  $('#rm').onclick=()=>{S.rounds--;renderSetup()};$('#rp').onclick=()=>{S.rounds++;renderSetup()};
- $('#packs').onclick=e=>{const b=e.target.closest('button');if(b){S.pack=b.dataset.p;renderSetup()}};
+ $('#packs').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.p,i=S.packs.indexOf(k);if(i<0)S.packs.push(k);else if(S.packs.length>1)S.packs.splice(i,1);renderSetup()};
+ $('#allp').onclick=()=>{S.packs=S.packs.length===Object.keys(PACKS).length?['Classic']:Object.keys(PACKS);renderSetup()};
  $('#topics').onclick=e=>{const b=e.target.closest('button');if(b){S.topic=b.dataset.t;renderSetup()}};
  $('#clo').oninput=e=>{S.lo=e.target.value;save()};$('#chi').oninput=e=>{S.hi=e.target.value;save()};$('#cpr').oninput=e=>{S.pr=e.target.value;save()};
  $('#go').onclick=start;
