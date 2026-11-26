@@ -17,6 +17,10 @@ const T={
  'Hobbies':'baking,gaming,hiking,painting,knitting,fishing,chess,photography,gardening,3D printing,skateboarding,karaoke,reading,camping,dancing,woodworking,journaling,rock climbing,cycling,bird watching',
  'Seattle':'Space Needle,Pike Place,Mount Rainier,ferry,Pioneer Square,Capitol Hill,rain,coffee,salmon,Lake Union,Alki Beach,Kerry Park,light rail,Fremont Troll,Discovery Park,Ballard,orca,Chihuly Garden,Seahawks,Gas Works Park',
  'Bible people':'Moses,David,Esther,Paul,Ruth,Daniel,Noah,Peter,Mary,Joseph,Elijah,Abraham,Samson,Jonah,Solomon,Deborah,Joshua,Lazarus,Gideon,Hannah',
+ 'Star Wars':'Luke Skywalker,Darth Vader,Yoda,Han Solo,Princess Leia,Chewbacca,Obi-Wan Kenobi,R2-D2,C-3PO,Darth Maul,Boba Fett,Jabba the Hutt,Palpatine,Rey,Kylo Ren,Mandalorian,Grogu,Ahsoka Tano,Lando Calrissian,Death Star,Millennium Falcon,Tatooine',
+ 'DC Comics':'Batman,Superman,Wonder Woman,The Flash,Aquaman,Green Lantern,Joker,Harley Quinn,Robin,Catwoman,Cyborg,Lex Luthor,Supergirl,Batgirl,Nightwing,Shazam,Martian Manhunter,Green Arrow,Black Adam,Deathstroke,Gotham City,Poison Ivy',
+ 'Movies':'Titanic,Jurassic Park,The Lion King,Frozen,Inception,Shrek,Toy Story,The Godfather,Forrest Gump,Finding Nemo,The Matrix,Jaws,Back to the Future,Avatar,Harry Potter,Home Alone,Grease,Up,Spider-Man,The Lord of the Rings,Moana,Coco',
+ 'Marvel Movies':'Iron Man,The Avengers,Black Panther,Thor,Captain America,Guardians of the Galaxy,Doctor Strange,Ant-Man,Spider-Man: Homecoming,Captain Marvel,Avengers: Endgame,Avengers: Infinity War,Thor: Ragnarok,Black Widow,Shang-Chi,Eternals,Deadpool & Wolverine,The Incredible Hulk,The Marvels,Thor: Love and Thunder,Black Panther: Wakanda Forever,Ant-Man and the Wasp',
  'Kevin’s places':'Texarkana,Dallas,Austin,Seattle,Portland,Chicago,New York,Toronto,Hong Kong,Shenzhen,Macau,Guangzhou,New Delhi,Vellore,Jabalpur,Dehradun,Taj Mahal,Washington DC'
 };
 const TOPICS=Object.fromEntries(Object.entries(T).map(([k,v])=>[k,v.split(',')]));
