@@ -2,7 +2,7 @@
 // ---- terminal + screens ----
 const say=(t,c)=>{const o=$(inGame?'#gout':'#iout'),d=document.createElement('div');d.textContent=t;if(c)d.className=c;o.append(d);o.scrollTop=o.scrollHeight};
 const sayLink=(label,url,note)=>{const o=$(inGame?'#gout':'#iout'),d=document.createElement('div'),a=document.createElement('a');a.textContent=label;a.href=url;a.target='_blank';a.rel='noopener';d.append(a);if(note){const n=document.createElement('span');n.className='d';n.textContent=' '+note;d.append(n)}o.append(d);o.scrollTop=o.scrollHeight};
-const THEMES=['light','dark','dracula','gruvbox','nord','solarized','matrix'];
+const THEMES=['light','dark','dracula','gruvbox','nord','solarized','matrix','batman'];
 let punBag=[];
 const play=()=>{if(!started){started=true;GL=initGame()}
  if(!GL){say('3D isn’t available in this browser, so the road trip can’t start.','d');return}
