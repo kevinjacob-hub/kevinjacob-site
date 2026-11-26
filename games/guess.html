@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Guess the Thing | Kevin Jacob</title>
+<meta name="description" content="A pass-the-phone party game. Everyone secretly types a word, then the group asks yes or no questions to guess each one.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="games.css">
+<script>try{var s=localStorage.getItem('kj-theme');if(s)document.documentElement.dataset.theme=s}catch(e){}</script></head><body>
+<div class="wrap">
+ <div class="bar"><a href="../">&larr; kevinjacob</a><a href="./">games</a><span class="sp">guess the thing</span><button id="thm" class="tb" aria-label="Change theme">theme</button></div>
+
+ <section id="setup">
+  <h1>guess the thing<span class="a">_</span></h1>
+  <p class="d">Everyone secretly types a word on this phone. Then, one word at a time, the group asks the owner yes or no questions until someone guesses it.</p>
+  <h2>players</h2>
+  <div class="row"><span>how many people</span><span class="step"><button id="nm" aria-label="Fewer players">&minus;</button><b id="nv">4</b><button id="np" aria-label="More players">+</button></span></div>
+  <div id="names"></div>
+  <h2>questions per word</h2>
+  <div class="row"><span>question limit</span><span class="step"><button id="lm" aria-label="Fewer questions">&minus;</button><b id="lv">20</b><button id="lp" aria-label="More questions">+</button></span></div>
+  <h2>category</h2>
+  <div class="chips" id="cats"></div>
+  <p class="warn">Everyone&rsquo;s word should fit the category. It&rsquo;s shown to guessers as a hint.</p>
+  <p></p>
+  <button class="btn big" id="go">start &#9654;</button>
+ </section>
+
+ <section id="hand" hidden>
+  <h1 class="ctr" id="hmsg"></h1>
+  <p class="ctr d" id="hsub"></p>
+  <p class="ctr"><button class="btn big" id="hgo">I&rsquo;m ready</button></p>
+ </section>
+
+ <section id="enter" hidden>
+  <h1 id="ename"></h1>
+  <p class="d">Type your secret word. Category: <b class="a" id="ecat"></b></p>
+  <input type="password" id="w" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" maxlength="40" aria-label="Your secret word" data-lpignore="true">
+  <p><label class="d"><input type="checkbox" id="wshow" style="width:auto;margin:0 6px 0 0"> show what I&rsquo;m typing</label></p>
+  <p class="a" id="werr" hidden></p>
+  <button class="btn big" id="lock">lock it in</button>
+ </section>
+
+ <section id="ready" hidden>
+  <h1>all words are in<span class="a">_</span></h1>
+  <p class="d">The phone holds every word, hidden. We&rsquo;ll go through them one at a time in a random order.</p>
+  <button class="btn big" id="begin">first word &#9654;</button>
+ </section>
+
+ <section id="play" hidden>
+  <p class="d ctr" id="rno"></p>
+  <h1 class="ctr" id="own"></h1>
+  <p class="ctr"><span class="pill" id="pcat"></span> <span class="pill" id="qno"></span></p>
+  <div id="qpanel">
+   <p class="ctr"><b class="u" id="asker"></b>, ask a yes or no question out loud. The owner answers.</p>
+   <input type="text" id="qtext" placeholder="type the question (optional)" maxlength="80" autocomplete="off" aria-label="Question (optional)">
+   <div class="ans"><button id="yes">yes</button><button id="no">no</button><button id="maybe">sort of</button></div>
+   <p class="ctr"><button id="guessbtn">I want to guess</button></p>
+  </div>
+  <div id="gpanel" hidden>
+   <p class="ctr"><b class="u" id="guesser"></b> says a guess out loud.<br><b class="a" id="owner2"></b>, was it right?</p>
+   <div class="two"><button class="btn big" id="right">yes, right!</button><button class="btn big" id="wrong" style="background:var(--panel);color:var(--fg);border-color:var(--line)">nope</button></div>
+  </div>
+  <h2>questions so far</h2>
+  <ul class="log" id="log"></ul>
+ </section>
+
+ <section id="result" hidden>
+  <h1 class="ctr" id="rtitle"></h1>
+  <p class="ctr" id="rsub"></p>
+  <p class="ctr"><button class="btn big" id="rev">show the word</button></p>
+  <div id="wordwrap" class="wordbox" hidden></div>
+  <h2>scoreboard</h2>
+  <div id="board"></div>
+  <p class="ctr"><button class="btn big" id="nextw">next word &#9654;</button></p>
+ </section>
+
+ <section id="end" hidden>
+  <h1 class="ctr">final scores<span class="a">_</span></h1>
+  <p class="ctr" id="win"></p>
+  <div id="fboard"></div>
+  <p class="ctr"><button id="again">play again (new words)</button> <button id="change">change settings</button></p>
+ </section>
+</div>
+<script src="guess.js"></script><script src="theme.js"></script>
+</body></html>
