@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="games.css">
 <script>try{var s=localStorage.getItem('kj-theme');if(s)document.documentElement.dataset.theme=s}catch(e){}</script></head><body>
 <div class="wrap">
- <div class="bar"><a href="../">&larr; kevinjacob</a><a href="./">games</a><span class="sp">wavelength</span></div>
+ <div class="bar"><a href="../">&larr; kevinjacob</a><a href="./">games</a><span class="sp">wavelength</span><button id="thm" class="tb" aria-label="Change theme">theme</button></div>
 
  <main id="host" hidden>
   <section id="setup">
@@ -19,7 +19,9 @@
    <h2>rounds</h2>
    <div class="row"><span>how many rounds</span><span class="step"><button id="rm" aria-label="Fewer rounds">&minus;</button><b id="rv">5</b><button id="rp" aria-label="More rounds">+</button></span></div>
 
-   <h2>theme</h2>
+   <h2>pack</h2>
+   <div class="topics" id="packs"></div>
+   <h2>scale</h2>
    <div class="topics" id="topics"></div>
    <div id="customwrap" hidden>
     <input type="text" id="clo" placeholder="1 means... (e.g. sleepy)" maxlength="30" aria-label="What 1 means">
@@ -83,4 +85,5 @@
  </main>
 </div>
 <script src="qr.js"></script><script src="wavelength.js"></script>
+<script src="theme.js"></script>
 </body></html>

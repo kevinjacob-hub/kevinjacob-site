@@ -2,26 +2,82 @@
    The group guesses the number. The clue-giver's card travels in a QR link, with no server. */
 (()=>{
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-/* [name, clue prompt, what 1 means, what 10 means] */
-const SP=[
- ['Food','Name a food','disgusting','delicious'],
- ['Desserts','Name a dessert','plain','over the top'],
- ['Movies','Name a movie','terrible','a masterpiece'],
- ['Animals','Name an animal','harmless','deadly'],
- ['Places','Name a place','never going','bucket list'],
- ['Jobs','Name a job','easy','brutal'],
- ['Things you own','Name something you could buy','cheap','expensive'],
- ['Heroes & villains','Name a hero or villain','pure villain','pure hero'],
- ['Sports','Name a sport','boring to watch','thrilling'],
- ['Weather','Name a kind of weather','awful','perfect'],
- ['Hobbies','Name a hobby','lazy','intense'],
- ['Cities','Name a city','sleepy town','huge metropolis'],
- ['Temperature','Name something','freezing','scorching'],
- ['Drinks','Name a drink','relaxing','wired'],
- ['Seattle','Name something in Seattle','tourist trap','local favorite'],
- ['Songs & genres','Name a type of music','calm','hype'],
-];
-const CUSTOM='Your own scale',RANDOM='Random each round';
+/* Packs of scales. Each scale is [name, clue prompt, what 1 means, what 10 means]. */
+const P="Name a person or character";
+const PACKS={
+ "Classic":[
+  ["Food","Name a food","disgusting","delicious"],
+  ["Desserts","Name a dessert","plain","over the top"],
+  ["Movies","Name a movie","terrible","a masterpiece"],
+  ["Animals","Name an animal","harmless","deadly"],
+  ["Places","Name a place","never going","bucket list"],
+  ["Jobs","Name a job","easy","brutal"],
+  ["Things you own","Name something you could buy","cheap","expensive"],
+  ["Heroes & villains","Name a hero or villain","pure villain","pure hero"],
+  ["Sports","Name a sport","boring to watch","thrilling"],
+  ["Weather","Name a kind of weather","awful","perfect"],
+  ["Hobbies","Name a hobby","lazy","intense"],
+  ["Cities","Name a city","sleepy town","huge metropolis"],
+  ["Temperature","Name something","freezing","scorching"],
+  ["Drinks","Name a drink","relaxing","wired"],
+  ["Seattle","Name something in Seattle","tourist trap","local favorite"],
+  ["Music","Name a type of music","calm","hype"]],
+ "Personality":[
+  ["Optimist vs pessimist",P,"professional pessimist","eternal optimist"],
+  ["Social vs hermit",P,"hermit crab","social butterfly"],
+  ["Drama vs chill",P,"chill master","drama queen"],
+  ["Bookworm vs gym rat",P,"gym rat","bookworm"],
+  ["Ideas vs action",P,"action junkie","idea machine"],
+  ["Night owl vs early bird",P,"early bird","night owl"],
+  ["Overthinker vs wing-it",P,"wing-it wizard","overthinker"],
+  ["Party vs wallflower",P,"wallflower","life of the party"],
+  ["Perfectionist vs good enough",P,"good-enough guru","perfectionist"],
+  ["Daydreamer vs taskmaster",P,"taskmaster","daydreamer"]],
+ "Everyday things":[
+  ["Kitchen therapist","Name a kitchen appliance","terrible therapist","great therapist"],
+  ["Bar fight fonts","Name a font","loses the bar fight","wins the bar fight"],
+  ["Car brand friends","Name a car brand","flakes on plans","loyal best friend"],
+  ["Dog breed CEO","Name a dog breed","embezzles funds","great CEO"],
+  ["Color substitute","Name a color","lets you watch movies all class","strict substitute teacher"],
+  ["Fruit emergency contact","Name a fruit","forgets to pick you up","good emergency contact"]],
+ "Oddly specific":[
+  ["Bush jump-scare","Name something to yell while jumping out of a bush","bad thing to yell","good thing to yell"],
+  ["Ring hiding spot","Name a place to hide a diamond ring","bad spot","good spot"],
+  ["After you trip","Name something to say right after tripping in public","bad thing to say","good thing to say"],
+  ["Joust gear","Name an item to bring to a medieval joust","bad item","good item"],
+  ["Late excuse","Name an excuse for being 20 minutes late","bad excuse","good excuse"],
+  ["Elevator whisper","Name something to whisper to a stranger in an elevator","bad whisper","good whisper"]],
+ "Absurd":[
+  ["Babysitting shapes","Name a shape","do not babysit","great babysitter"],
+  ["Court hats","Name a hat to wear to a court hearing","bad hat","good hat"],
+  ["Day of the week sounds","Name a sound","feels like a Tuesday","feels like a Saturday"],
+  ["Pillow fight","Name a weapon for a pillow fight","bad weapon","good weapon"],
+  ["Animal DJs","Name an animal","clears the dance floor","great DJ"],
+  ["Trivia night","Name a historical figure","ruins trivia night","great for your team"]],
+ "Unhinged: social":[
+  ["Dentist whisper","Name something to whisper to your dentist mid-procedure","bad thing to whisper","good thing to whisper"],
+  ["Ruined haircut","Name something to say when the barber asks how it looks","bad thing to say","good thing to say"],
+  ["Security tackle","Name something to yell right before security tackles you","bad thing to yell","good thing to yell"],
+  ["Chili's breakup","Name a way to break up with someone at Chili's","bad way","good way"],
+  ["Victorian child","Name something to say to a Victorian child to scare them stiff","weak","terrifying"],
+  ["Bank escape","Name something to scream while running out of a bank","bad thing to scream","good thing to scream"]],
+ "Unhinged: chaos":[
+  ["1v1 household","Name a household object","you get beaten to death with it","you win the 1v1"],
+  ["Cologne liquids","Name a liquid","bad cologne","good cologne"],
+  ["Animal crimes","Name an animal","commits tax fraud","pays child support"],
+  ["Public snacks","Name a food","illegal to eat in public","upstanding citizen"],
+  ["Knife fight","Name an item to bring to a knife fight (no knives)","bad item","good item"],
+  ["Pokemon office job","Name a Pokemon","fired on day one","survives a 9 to 5"]],
+ "Unhinged: wild":[
+  ["Last words","Name some last words","bad last words","good last words"],
+  ["Cartoon prisoners","Name a cartoon character","snitches to the police","definitely been to prison"],
+  ["Fake your death","Name a place to fake your own death","bad place","good place"],
+  ["Police chase song","Name a song to play during a police chase","bad song","good song"],
+  ["Special skills","Name a skill for your resume","bad skill","good skill"],
+  ["Bug drivers","Name a bug","crashes the car immediately","trusted to drive"]]
+};
+const ALL=Object.values(PACKS).flat();
+const CUSTOM='Your own scale',RPACK='Random from this pack',RALL='Random from everything';
 const KEY='kj-wavelength-settings',ME='kj-wavelength-me',XK='kev-wavelength';
 const PTS=[3,2,1];
 
@@ -71,30 +127,37 @@ function player(p){
 }
 
 /* ---------- host view ---------- */
-const S=Object.assign({n:4,rounds:5,topic:'Food',lo:'',hi:'',pr:''},(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(_){return{}}})());
+const S=Object.assign({n:4,rounds:5,pack:'Classic',topic:'Random from this pack',lo:'',hi:'',pr:''},(()=>{try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(_){return{}}})());
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(_){}};
 let G=null;
 
 function renderSetup(){
  S.n=Math.min(12,Math.max(2,S.n|0));S.rounds=Math.min(15,Math.max(1,S.rounds|0));
+ if(!PACKS[S.pack])S.pack='Classic';
+ const inPack=PACKS[S.pack].some(x=>x[0]===S.topic);
+ if(!inPack&&![RPACK,RALL,CUSTOM].includes(S.topic))S.topic=RPACK;
  $('#nv').textContent=S.n;$('#rv').textContent=S.rounds;
- $('#topics').innerHTML=SP.map(s=>s[0]).concat([RANDOM,CUSTOM]).map(t=>{const s=SP.find(x=>x[0]===t);
-  return '<button class="tp" data-t="'+esc(t)+'" aria-pressed="'+(t===S.topic)+'">'+esc(t)+'<small>'+(s?esc(s[2])+' → '+esc(s[3]):t===RANDOM?'a new scale each time':'make your own')+'</small></button>'}).join('');
+ $('#packs').innerHTML=Object.keys(PACKS).map(k=>'<button class="tp" data-p="'+esc(k)+'" aria-pressed="'+(k===S.pack)+'">'+esc(k)+'<small>'+PACKS[k].length+' scales</small></button>').join('');
+ $('#topics').innerHTML=PACKS[S.pack].map(x=>x[0]).concat([RPACK,RALL,CUSTOM]).map(t=>{const x=PACKS[S.pack].find(y=>y[0]===t);
+  return '<button class="tp" data-t="'+esc(t)+'" aria-pressed="'+(t===S.topic)+'">'+esc(t)+'<small>'+(x?esc(x[2])+' \u2192 '+esc(x[3]):t===RPACK?'a new scale each round':t===RALL?'any pack':'make your own')+'</small></button>'}).join('');
  $('#customwrap').hidden=S.topic!==CUSTOM;
  $('#clo').value=S.lo;$('#chi').value=S.hi;$('#cpr').value=S.pr;
  save();
 }
 
+const used=new Set();
 function specFor(){
  if(S.topic===CUSTOM)return{name:'Custom',prompt:S.pr.trim()||'Give a clue',lo:S.lo.trim(),hi:S.hi.trim()};
- const s=S.topic===RANDOM?pick(SP):SP.find(x=>x[0]===S.topic)||SP[0];
+ let s;
+ if(S.topic===RPACK||S.topic===RALL){const pool=S.topic===RALL?ALL:PACKS[S.pack],fresh=pool.filter(x=>!used.has(x[0]));s=pick(fresh.length?fresh:pool);used.add(s[0])}
+ else s=PACKS[S.pack].find(x=>x[0]===S.topic)||PACKS[S.pack][0];
  return{name:s[0],prompt:s[1],lo:s[2],hi:s[3]};
 }
 
 function start(){
  if(S.topic===CUSTOM&&(!S.lo.trim()||!S.hi.trim())){$('#err').textContent='fill in both ends of your scale.';$('#err').hidden=false;return}
  $('#err').hidden=true;
- G={id:Math.random().toString(36).slice(2,8),round:1,rounds:S.rounds,n:S.n,score:0,log:[],num:0,guess:null,spec:null};
+ used.clear();G={id:Math.random().toString(36).slice(2,8),round:1,rounds:S.rounds,n:S.n,score:0,log:[],num:0,guess:null,spec:null};
  nextRound(true);
 }
 
@@ -156,6 +219,7 @@ function host(){
  renderSetup();
  $('#nm').onclick=()=>{S.n--;renderSetup()};$('#np').onclick=()=>{S.n++;renderSetup()};
  $('#rm').onclick=()=>{S.rounds--;renderSetup()};$('#rp').onclick=()=>{S.rounds++;renderSetup()};
+ $('#packs').onclick=e=>{const b=e.target.closest('button');if(b){S.pack=b.dataset.p;renderSetup()}};
  $('#topics').onclick=e=>{const b=e.target.closest('button');if(b){S.topic=b.dataset.t;renderSetup()}};
  $('#clo').oninput=e=>{S.lo=e.target.value;save()};$('#chi').oninput=e=>{S.hi=e.target.value;save()};$('#cpr').oninput=e=>{S.pr=e.target.value;save()};
  $('#go').onclick=start;
