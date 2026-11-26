@@ -84,7 +84,7 @@ CMD.quit=CMD.home=CMD.exit;CMD.goto=CMD.open=CMD.cd;
 for(const[c,id]of Object.entries({gallery:'gallery',contact:'contact',resume:'resume',testimony:'testimony',projects:'projects',experience:'experience',log:'experience',skills:'skills',blog:'blog',bakes:'bakes',cheesecake:'bakes',cheesecakes:'bakes',breadspace:'bakes',bread:'bakes',korner:'korner',rsvp:'korner',join:'korner',kk:'korner',dinner:'korner',potluck:'korner',interests:'off',neofetch:'home'}))CMD[c]=()=>inGame?say(c+' is on the home page. type exit.','d'):jump(id);
 CMD.faith=CMD.story=CMD.testimony;
 CMD['road-trip']=CMD.drive=CMD.play=CMD.about;
-CMD.games=CMD.imposter=CMD.party=()=>inGame?say('games are on the home page. type exit first.','d'):(say('opening party games...','d'),setTimeout(()=>{location.href='games/'},350));
+CMD.games=CMD.imposter=CMD.party=CMD.wavelength=()=>inGame?say('games are on the home page. type exit first.','d'):(say('opening party games...','d'),setTimeout(()=>{location.href='games/'},350));
 const exec=v=>{say('$ '+v,'d');const[c,...r]=v.toLowerCase().split(/\s+/);Object.hasOwn(CMD,c)?CMD[c](r.length?r.join(' '):undefined):say('command not found: '+c+'. try help','d')};
 const H=[];let hi=0;
 const wire=(f,i)=>{f.onsubmit=e=>{e.preventDefault();const v=i.value.trim();i.value='';if(!v)return;H.push(v);hi=H.length;exec(v)};

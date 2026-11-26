@@ -19,4 +19,4 @@ Any static host works (GitHub Pages, Cloudflare Pages, Netlify). Publish the rep
 
 ## Party games
 
-`games/` holds browser party games (no server). `games/imposter.html` is Guess the Imposter: the host sets players, imposters and topic, and each player scans a QR code that carries their own card in the link. Topics live in `games/imposter.js` (the `T` object). Open the terminal and type `games`.
+`games/` holds browser party games (no server). `games/imposter.html` is Guess the Imposter: the host sets players, imposters and topic, and each player scans a QR code that carries their own card in the link. Topics live in `games/imposter.js` (the `T` object). `games/wavelength.html` is Wavelength: the clue-giver scans a QR code to see a secret number from 1 to 10 on a scale, and the group guesses it. Scales live in `games/wavelength.js` (the `SP` list). Open the terminal and type `games`.

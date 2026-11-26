@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wavelength | Kevin Jacob</title>
+<meta name="description" content="A party game of reading minds. One player sees a secret number from 1 to 10 and gives a clue. Everyone else guesses it.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="games.css">
+<script>try{var s=localStorage.getItem('kj-theme');if(s)document.documentElement.dataset.theme=s}catch(e){}</script></head><body>
+<div class="wrap">
+ <div class="bar"><a href="../">&larr; kevinjacob</a><a href="./">games</a><span class="sp">wavelength</span></div>
+
+ <main id="host" hidden>
+  <section id="setup">
+   <h1>wavelength<span class="a">_</span></h1>
+   <p class="d">One person sees a secret number from 1 to 10 on a scale and gives a clue that fits it. Everyone else guesses the number. Closer is more points.</p>
+
+   <h2>players</h2>
+   <div class="row"><span>how many people</span><span class="step"><button id="nm" aria-label="Fewer players">&minus;</button><b id="nv">4</b><button id="np" aria-label="More players">+</button></span></div>
+   <h2>rounds</h2>
+   <div class="row"><span>how many rounds</span><span class="step"><button id="rm" aria-label="Fewer rounds">&minus;</button><b id="rv">5</b><button id="rp" aria-label="More rounds">+</button></span></div>
+
+   <h2>theme</h2>
+   <div class="topics" id="topics"></div>
+   <div id="customwrap" hidden>
+    <input type="text" id="clo" placeholder="1 means... (e.g. sleepy)" maxlength="30" aria-label="What 1 means">
+    <input type="text" id="chi" placeholder="10 means... (e.g. wired)" maxlength="30" aria-label="What 10 means">
+    <input type="text" id="cpr" placeholder="clue prompt (optional), e.g. name a drink" maxlength="40" aria-label="Clue prompt">
+   </div>
+   <p class="a" id="err" hidden></p>
+   <p></p>
+   <button class="btn big" id="go">start game &#9654;</button>
+  </section>
+
+  <section id="clue" hidden>
+   <h1 class="ctr" id="rhead">Round 1 of 5</h1>
+   <p class="ctr"><b class="u" id="giver"></b> is the clue-giver</p>
+   <div class="spec" id="spec"></div>
+   <div id="qrwrap">
+    <p class="ctr d">Clue-giver, point your phone camera at this code to see your secret number. Everyone else, look away.</p>
+    <div class="qrbox" id="qr"></div>
+    <p class="ctr"><button id="here">no phone? show it on this screen</button> <button id="copy">copy link</button></p>
+   </div>
+   <div id="herewrap" hidden>
+    <p class="ctr d">Clue-giver, hold the card to see your number. Everyone else, look away.</p>
+    <div id="herecard"></div>
+    <p class="ctr"><button id="backqr">&larr; back to the QR code</button></p>
+   </div>
+   <p class="ctr"><button class="btn" id="cluedone" style="border-color:var(--acc);color:var(--acc)">clue given &#9654;</button></p>
+  </section>
+
+  <section id="guess" hidden>
+   <h1 class="ctr">make your guess<span class="a">_</span></h1>
+   <p class="ctr d">The clue-giver says their answer out loud. Talk it over, then pick one number together.</p>
+   <div class="spec" id="gspec"></div>
+   <div class="nums" id="nums"></div>
+   <p class="ctr"><button class="btn big" id="lock" disabled>lock it in</button></p>
+  </section>
+
+  <section id="result" hidden>
+   <h1 class="ctr" id="verdict"></h1>
+   <div class="pts" id="pts"></div>
+   <div class="spec" id="rspec"></div>
+   <p class="ctr" id="tally"></p>
+   <p class="ctr"><button class="btn big" id="nextround">next round &#9654;</button></p>
+  </section>
+
+  <section id="end" hidden>
+   <h1 class="ctr">final score<span class="a">_</span></h1>
+   <div class="pts" id="total"></div>
+   <p class="ctr" id="grade"></p>
+   <ul class="list" id="log"></ul>
+   <p class="ctr"><button id="again">play again (same settings)</button> <button id="change">change settings</button></p>
+  </section>
+ </main>
+
+ <main id="me" hidden>
+  <h1 id="who">Clue-giver</h1>
+  <p class="d">Hold the card to see your secret number. Let go to hide it. Then give a clue that fits.</p>
+  <div class="spec" id="mespec"></div>
+  <div id="mecard"></div>
+  <p class="warn">This card lives only on your phone. Close this tab when the round is over.</p>
+  <p class="warn"><a href="#" id="hostlink">host a game instead</a></p>
+ </main>
+</div>
+<script src="qr.js"></script><script src="wavelength.js"></script>
+</body></html>
