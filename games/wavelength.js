@@ -59,7 +59,6 @@ const PACKS={
   ["Ruined haircut","Name something to say when the barber asks how it looks","bad thing to say","good thing to say"],
   ["Security tackle","Name something to yell right before security tackles you","bad thing to yell","good thing to yell"],
   ["Chili's breakup","Name a way to break up with someone at Chili's","bad way","good way"],
-  ["Victorian child","Name something to say to a Victorian child to scare them stiff","weak","terrifying"],
   ["Bank escape","Name something to scream while running out of a bank","bad thing to scream","good thing to scream"]],
  "Unhinged: chaos":[
   ["1v1 household","Name a household object","you get beaten to death with it","you win the 1v1"],
